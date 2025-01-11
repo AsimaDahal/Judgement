@@ -14,4 +14,4 @@ High-Level Architecture (Monolithic)
 - - WebSockets: For real-time communication during gameplay.
 - - RESTful APIs: For authentication, game setup, and other non-real-time interactions.
 
-- Database: A relational database (e.g., PostgreSQL) managed via JPA/Hibernate for persistent data storage.
+- Database: MongoDB
