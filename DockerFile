@@ -1,0 +1,39 @@
+# ----------------------------------------------------
+# Stage 1: Build the React front-end
+# ----------------------------------------------------
+FROM node:16-alpine AS build-frontend
+WORKDIR /app
+COPY frontend/package*.json ./
+RUN npm install
+COPY frontend/ .
+RUN npm run build
+
+# ----------------------------------------------------
+# Stage 2: Build the Spring Boot back-end
+# ----------------------------------------------------
+FROM maven:3.8.6-amazoncorretto-17 AS build-backend
+WORKDIR /backend
+COPY backend/pom.xml .
+RUN mvn dependency:go-offline
+COPY backend/ .
+RUN mvn clean package -DskipTests
+
+# ----------------------------------------------------
+# Stage 3: Package it all in a minimal Java image
+# ----------------------------------------------------
+FROM amazoncorretto:17-alpine
+WORKDIR /app
+
+# Copy the JAR from the build-backend stage
+COPY --from=build-backend /backend/target/*.jar app.jar
+
+# Copy React build into Spring Boot static directory (if embedding in the JAR)
+# Alternatively, you can copy them to a separate directory and configure Spring to serve it
+RUN mkdir -p /temp_frontend_build
+COPY --from=build-frontend /app/build /temp_frontend_build
+
+# For a truly monolithic JAR, you'd place the build directly into src/main/resources/static before building
+# Or you can serve it externally from /temp_frontend_build with an embedded server.
+
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
