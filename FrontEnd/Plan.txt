@@ -1,0 +1,4 @@
+I want to set up the container before even coding.
+This will give me consistency and easier collaboration.
+
+So the frist step is to set up the container. 

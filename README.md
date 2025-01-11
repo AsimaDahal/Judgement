@@ -4,7 +4,7 @@ Card game (Popular Variation of Spade)
 
 Judgment is a trick-taking card game where players predict the number of tricks they will win in each round. Accurate predictions earn points, while incorrect ones result in penalties. The game involves strategic bidding, card play, and scoring, making it engaging and competitive.
 
-High-Level Architecture
+High-Level Architecture (Monolithic)
 
 - Client-Server Model: The application follows a client-server architecture.
 - - Front-End: Built with React, responsible for the user interface and handling user interactions.
